@@ -1,0 +1,21 @@
+:root {
+  --text: #def2e3;
+  --textSoft:black;
+  --background: #f9f9f9;;
+  --primary: #94d6a8;
+  --secondary: #2c3e50;
+  --accent: #e74c3c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--textSoft);
+  overflow: auto;
+}
+

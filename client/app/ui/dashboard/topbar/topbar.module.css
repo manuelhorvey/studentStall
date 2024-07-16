@@ -1,0 +1,70 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 0 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.toggle {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: #555;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.searchIcon {
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  color: white;
+  width: 200px;
+  outline: none;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttonIcon {
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+}
+
+.topbarSearch {
+  margin-left: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+  .searchContainer{
+    display: none;
+  }
+  .topbar {
+    flex-wrap: wrap; /* Wrap content on smaller screens */
+  }
+}
