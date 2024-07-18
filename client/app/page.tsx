@@ -39,7 +39,7 @@ const Home = () => {
           <div className={styles.sideImage}>
             <div className={styles.imageContainer}>
               <Image
-                src="/assets/sideImage.jpg"
+                src="/assets/knust_entrance.jpg"
                 alt="Our Campus Community"
                 width={400}
                 height={300}

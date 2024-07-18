@@ -54,18 +54,30 @@ const ProductDetails = () => {
 
         const response = await axios.get<Product>(`http://localhost:3000/products/${productId}`);
         setProduct(response.data);
-
-        const imagesResponse = await axios.get<{ url: string }[]>(`http://localhost:3000/images/${productId}`);
-        setImages(imagesResponse.data.map((img) => img.url));
-        setLoading(false);
       } catch (error) {
         setError('Error fetching product details');
+      } finally {
         setLoading(false);
       }
     };
 
     fetchProductDetails();
   }, [productId]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (!productId || !product) return;
+      try {
+        const imagesResponse = await axios.get<{ url: string }[]>(`http://localhost:3000/images/${productId}`);
+        setImages(imagesResponse.data.map((img) => img.url));
+      } catch (error) {
+        setError('Error fetching images');
+      }
+    };
+
+    fetchImages();
+  }, [productId, product]);
+
 
   if (loading) {
     return <div className={styles.loadingContainer}>Loading...</div>; 

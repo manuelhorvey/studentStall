@@ -35,7 +35,7 @@ const menuItems = [
 const Sidebar: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     const token = localStorage.getItem('token');

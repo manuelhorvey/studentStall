@@ -6,6 +6,7 @@ import axios from 'axios';
 import styles from '@/app/ui/signin/signin.module.css';
 import Link from 'next/link';
 import { loginFailure, loginSuccess } from '../slice/authSlice';
+import { CircularProgress, Button } from '@mui/material';
 
 const SignIn: React.FC = () => {
   const router = useRouter();
@@ -14,8 +15,20 @@ const SignIn: React.FC = () => {
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const validateEmail = (email: string) => {
+    return email.endsWith('.knust.edu.gh');
+  };
 
   const handleLogin = async () => {
+    if (!validateEmail(email)) {
+      setError("Please login with a valid email that ends in .knust.edu.gh");
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
       const response = await axios.post('http://localhost:3000/auth/login', { email, password });
       const { token, refreshToken, user } = response.data;
@@ -37,6 +50,8 @@ const SignIn: React.FC = () => {
         setError('Invalid email or password');
         dispatch(loginFailure({ error: 'Invalid email or password' }));
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,7 +93,15 @@ const SignIn: React.FC = () => {
           />
           <label htmlFor='rememberMe' className={styles.rememberMeLabel}>Remember me</label>
         </div>
-        <button type='button' className={styles.button} onClick={handleLogin}>Login</button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleLogin}
+          disabled={isLoading}
+          className={styles.button}
+        >
+          {isLoading ? <CircularProgress size={24} /> : 'Login'}
+        </Button>
 
         <Link href='/signup'>
           <span className={styles.newaccount}><u>Create a new account</u></span>
