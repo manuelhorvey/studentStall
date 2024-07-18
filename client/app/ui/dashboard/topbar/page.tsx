@@ -18,7 +18,7 @@ const TopBar = () => {
     <div className={styles.topbar}>
       <h3 className={styles.logo}>
         <BiMenu onClick={toggleDrawer} className={styles.toggle} />
-        StudentStall
+        CampusMarket
       </h3>
       <Drawer
         sx={{ '& .MuiDrawer-paper': { width: 250 } }}

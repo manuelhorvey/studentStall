@@ -43,7 +43,6 @@ const Discover: React.FC = () => {
 
   return (
     <div className={styles.discoverContainer}>
-      <Image src={imageSrc} alt="Description of the image" className={styles.image} />
       <div className={styles.textContainer}>
         <h3>All Products</h3>
         <p><i>

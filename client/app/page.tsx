@@ -13,7 +13,7 @@ const Home = () => {
   return (
     <div className={styles.container}>
       <div className={styles.topbar}>
-        <h2 className={styles.Logo}>StudentStall</h2>
+        <h2 className={styles.Logo}>CampusMarket</h2>
         <div className={styles.groupList}>
           <Link href={'/'}>
             <p>Home</p>
@@ -26,7 +26,7 @@ const Home = () => {
       <div className={styles.content}>
         <div className={styles.section}>
           <div className={styles.welcome}>
-            <h1>Welcome to StudentStall</h1>
+            <h1>Welcome to CampusMarket</h1>
             <p className={styles.users}>
               100+
               <i>Active sellers</i>
@@ -52,7 +52,7 @@ const Home = () => {
         </div>
         <div className={styles.exclusiveDeals}>
           <h4>Exclusive deals</h4>
-          <h2>Why Choose StudentStall?</h2>
+          <h2>Why Choose CampusMarket?</h2>
           <p>Unlock special offers and find unique items from fellow students.</p>
           <div className={styles.exclusiveDealsContent}>
             <div>
