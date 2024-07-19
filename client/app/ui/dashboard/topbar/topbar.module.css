@@ -25,6 +25,7 @@
   background-color: #555;
   padding: 8px;
   border-radius: 5px;
+  margin: 0 10px;
 }
 
 .searchIcon {
@@ -36,8 +37,10 @@
   border: none;
   background: none;
   color: white;
-  width: 200px;
+  width: 300px;
   outline: none;
+  padding: 5px;
+  margin: 0 10px;
 }
 
 .buttons {

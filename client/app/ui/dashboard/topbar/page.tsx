@@ -29,7 +29,7 @@ const TopBar = () => {
       </Drawer>
       <div className={`${styles.searchContainer} ${styles.topbarSearch}`}>
         <MdSearch />
-        <input type='text' placeholder='Search for something...' />
+        <input type='text' className={styles.searchInput} placeholder='Search for something...' />
       </div>
       <div className={styles.buttons}>
         

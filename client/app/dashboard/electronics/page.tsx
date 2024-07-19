@@ -55,9 +55,9 @@ const Electronics: React.FC = () => {
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <div className={styles.products}>
         {electronicsItems.map((item) => (
-          <div key={item._id} onClick={() => handleItemClick(item)}>
+          <div key={item._id}  className={styles.productItem} onClick={() => handleItemClick(item)}>
             <CustomsCard
               image={images[item._id] || ''}
               title={item.name}

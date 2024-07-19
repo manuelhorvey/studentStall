@@ -21,7 +21,6 @@ const Discover: React.FC = () => {
     dispatch(fetchProducts('http://localhost:3000/products/items'));
   }, [dispatch]);
 
-
   useEffect(() => {
     if (products.length > 0) {
       const productIds = products.map((product) => product._id);
@@ -51,7 +50,7 @@ const Discover: React.FC = () => {
       </div>
       <div className={styles.products}>
         {products.map((product) => (
-          <div key={product._id} onClick={() => handleCardClick(product)}>
+          <div key={product._id} className={styles.productItem} onClick={() => handleCardClick(product)}>
             <CustomsCard
               image={images[product._id] || ''}
               title={product.name}

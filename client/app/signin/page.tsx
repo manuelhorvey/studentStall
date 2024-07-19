@@ -103,6 +103,7 @@ const SignIn: React.FC = () => {
           {isLoading ? <CircularProgress size={24} /> : 'Login'}
         </Button>
 
+        <span>Dont not have an account? </span>
         <Link href='/signup'>
           <span className={styles.newaccount}><u>Create a new account</u></span>
         </Link>

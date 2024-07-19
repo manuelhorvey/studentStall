@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { MdDashboard, MdEmail, MdLogout } from 'react-icons/md';
 import { FaLaptop } from 'react-icons/fa';
 import { GiBookshelf, GiClothes, GiSchoolBag } from 'react-icons/gi';
-import { FaListCheck } from 'react-icons/fa6';
+import { FaChair, FaListCheck } from 'react-icons/fa6';
 import styles from './sidebar.module.css';
 import MenuLink from './menulinks/menuLink';
 import { RootState } from '@/app/store/store';
@@ -17,17 +17,18 @@ const menuItems = [
     title: 'Browse by',
     list: [
       { title: 'All Products', path: '/dashboard', icon: <MdDashboard /> },
-      { title: 'Textbooks', path: '/dashboard/textbooks', icon: <GiBookshelf /> },
+      { title: 'Stationaries', path: '/dashboard/stationary', icon: <GiBookshelf /> },
       { title: 'Electronics', path: '/dashboard/electronics', icon: <FaLaptop /> },
       { title: 'Clothing', path: '/dashboard/clothing', icon: <GiClothes /> },
+      { title: 'Furniture', path: '/dashboard/furniture', icon: <FaChair /> },
       { title: 'Accessories', path: '/dashboard/accessories', icon: <GiSchoolBag /> },
     ],
   },
   {
     title: 'User',
     list: [
-      { title: 'List A Product', path: '/dashboard/listproducts', icon: <FaListCheck /> },
-      { title: 'Inbox', path: '/dashboard/inbox', icon: <MdEmail /> },
+      { title: 'Upload A Product', path: '/dashboard/uploadproducts', icon: <FaListCheck /> },
+      { title: 'Messages', path: '/dashboard/inbox', icon: <MdEmail /> },
     ],
   },
 ];
@@ -69,7 +70,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.user}>
-        {user && ( // Check if user is defined before accessing user properties
+        {user && (
           <div className={styles.userDetails}>
             <span className={styles.username}>{user.name}</span>
             <span className={styles.userTitle}>{user.email}</span>

@@ -28,7 +28,7 @@ const StartChatButton: React.FC<StartChatButtonProps> = ({ userId, recipientId, 
       const conversations = conversationsResponse.data;
 
       const existingConversation = conversations.find((conversation) => {
-        if (conversation.members.length !== 2) return false; // Ensure exactly two members
+        if (conversation.members.length !== 2) return false; 
       
         const memberSet = new Set(conversation.members);
         return memberSet.has(userId) && memberSet.has(recipientId);

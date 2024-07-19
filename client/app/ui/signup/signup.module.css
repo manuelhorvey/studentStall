@@ -1,7 +1,7 @@
 .container {
-  max-width: 400px;
+  max-width: 500px;
   margin: 50px auto;
-  padding: 20px;
+  padding: 30px;
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -79,15 +79,18 @@
 }
 
 .input {
-  padding-right: 36px; /* Adjust this value to leave space for the button */
+  padding-right: 36px; 
 }
 
 .toggleButton {
   position: absolute;
-  top: 50%;
+  top: 35%;
   transform: translateY(-50%);
-  right: 8px; /* Adjust this value to position the button */
+  right: 8px; 
   background: none;
   border: none;
   cursor: pointer;
+  background-color: #ccc;
+  padding: 0 10px;
+  border-radius: 5px;
 }

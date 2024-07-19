@@ -52,9 +52,10 @@
   margin-bottom: 10px;
 }
 
+
 .users {
   font-size: 48px;
-  color: #007bff;
+  color: red;
   margin: 20px 0;
   position: relative;
 }
@@ -107,12 +108,15 @@
 .button {
   background-color: #007bff;
   color: white;
-  padding: 10px 20px;
+  padding: 20px 30px;
   border: none;
   cursor: pointer;
   font-size: 16px;
   border-radius: 5px;
+  margin-bottom: 20px;
 }
+
+
 
 .button:hover {
   background-color: #0056b3;
@@ -128,7 +132,7 @@
 .exclusiveDeals h4 {
   font-size: 24px;
   margin-bottom: 10px;
-  color: #007bff;
+  color: darkgreen
 }
 
 .exclusiveDeals h2 {
@@ -169,7 +173,7 @@
 
 .icon {
   font-size: 40px;
-  color: #007bff;
+  color: darkgreen;
 }
 
 .explorcategories{

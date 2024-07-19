@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react';
-import styles from '@/app/ui/dashboard/listproducts/add/listproducts.module.css';
+import styles from '@/app/ui/dashboard/uploadproducts/add/listproducts.module.css';
 import { MdCameraAlt } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
@@ -9,10 +9,10 @@ interface ProductData {
   name: string;
   description: string;
   price: number;
-  category: string; 
+  category: string;
   negotiable: boolean;
-  user: string; 
-  images: string[]; 
+  user: string;
+  images: string[];
 }
 
 interface DecodedToken {
@@ -25,11 +25,11 @@ const ListProducts: React.FC = () => {
   const [productData, setProductData] = useState<ProductData>({
     name: '',
     description: '',
-    price: 0, 
+    price: 0,
     category: '',
     negotiable: false,
-    user: '', 
-    images: [], 
+    user: '',
+    images: [],
   });
 
 
@@ -49,7 +49,7 @@ const ListProducts: React.FC = () => {
       [name]: type === 'checkbox' ? isChecked : value,
     });
   };
-  
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -66,29 +66,34 @@ const ListProducts: React.FC = () => {
     }
   };
 
+  const capitalizeFirstLetterOfEachWord = (text: string): string => {
+    return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const { name, description, price, category, negotiable } = productData;
-  
+
     if (!userId) {
       alert('User not authenticated');
       return;
     }
-  
+
+    const formattedName = capitalizeFirstLetterOfEachWord(name);
+    const formattedDescription = capitalizeFirstLetterOfEachWord(description);
+
     try {
       const formData = {
-        name,
-        description,
+        name: formattedName,
+        description: formattedDescription,
         price,
         category,
         negotiable,
         user: userId,
         images,
       };
-  
-      console.log('FormData:', formData);
-  
+
       const response = await fetch('http://localhost:3000/products/additem', {
         method: 'POST',
         headers: {
@@ -97,11 +102,10 @@ const ListProducts: React.FC = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (response.ok) {
-        const data = await response.json();
         alert('Product added successfully');
-        router.push('/dashboard/listproducts');
+        router.push('/dashboard/uploadproducts');
       } else {
         const errorMessage = await response.text();
         console.error('Failed to add product:', errorMessage);
@@ -112,11 +116,11 @@ const ListProducts: React.FC = () => {
       alert('Failed to add product');
     }
   };
-    
+
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.heading}>List A Product</h3>
+      <h3 className={styles.heading}>Upload A Product</h3>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.addPhotos}>
           <label htmlFor="photos" className={styles.photoLabel}>
@@ -132,7 +136,7 @@ const ListProducts: React.FC = () => {
             />
           </label>
         </div>
-        
+
         <div className={styles.formGroup}>
           <label htmlFor="name" className={styles.label}>Name:</label>
           <input
@@ -182,9 +186,9 @@ const ListProducts: React.FC = () => {
             <option value="">Select a category</option>
             <option value="electronics">Electronics</option>
             <option value="clothing">Clothing</option>
-            <option value="books">Books</option>
+            <option value="stationary">Stationary</option>
             <option value="accessories">Accessories</option>
-            {/* Add more options as needed */}
+            <option value="furniture">Furniture</option>
           </select>
         </div>
         <div className={styles.formGroup}>

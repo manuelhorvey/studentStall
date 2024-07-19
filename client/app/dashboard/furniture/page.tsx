@@ -11,24 +11,24 @@ import { fetchProducts } from '@/app/slice/productSlice';
 import { fetchImages } from '@/app/slice/imagesSlice';
 
 
-const Accessories: React.FC = () => {
+const Furniture: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const accessoriesItems = useSelector((state:RootState)=>state.products.items);
+  const furnitureItems = useSelector((state:RootState)=>state.products.items);
   const images = useSelector((state:RootState)=>state.images.items);
   const loading = useSelector((state:RootState)=>state.products.status) === 'loading';
   const error = useSelector((state:RootState)=>state.products.error);
 
   useEffect(()=>{
-    dispatch(fetchProducts('http://localhost:3000/products/category/accessories'));
+    dispatch(fetchProducts('http://localhost:3000/products/category/furniture'));
   }, [dispatch]);
 
   useEffect(() => {
-    if (accessoriesItems.length > 0) {
-      const accessoriesItemsIds = accessoriesItems.map((product) => product._id);
-      dispatch(fetchImages(accessoriesItemsIds));
+    if (furnitureItems.length > 0) {
+      const furnitureItemsIds = furnitureItems.map((product) => product._id);
+      dispatch(fetchImages(furnitureItemsIds));
     }
-  }, [accessoriesItems, dispatch]);
+  }, [furnitureItems, dispatch]);
 
 
   const handleItemClick = (item: Product) => {
@@ -51,17 +51,17 @@ const Accessories: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
-        <h3>Accessories</h3>
+        <h3>furniture</h3>
         <p>
           <i>
-            Explore our collection of accessoriesItems. Discover stylish options designed to<br />
-            complement your look and enhance your lifestyle.
+            Explore our collection of furnitureItems. Discover stylish options designed to<br />
+            complement your look and enhance your lifestyle on campus.
           </i>
         </p>
       </div>
 
       <div className={styles.products}>
-        {accessoriesItems.map(accessory => (
+        {furnitureItems.map(accessory => (
           <div key={accessory._id} className={styles.productItem} onClick={() => handleItemClick(accessory)}>
             <CustomsCard
               image={images[accessory._id] || ''}
@@ -77,4 +77,4 @@ const Accessories: React.FC = () => {
   );
 };
 
-export default Accessories;
+export default Furniture;

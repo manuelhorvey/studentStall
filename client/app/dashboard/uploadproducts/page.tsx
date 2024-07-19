@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from '@/app/ui/dashboard/listproducts/products.module.css';
+import styles from '@/app/ui/dashboard/uploadproducts/products.module.css';
 import Link from 'next/link';
 import { jwtDecode } from 'jwt-decode';
 
@@ -96,7 +96,7 @@ const Products: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <h3 className={styles.headertext}>Your Listing</h3>
-        <Link href={'/dashboard/listproducts/add'}>
+        <Link href={'/dashboard/uploadproducts/add'}>
           <button className={styles.button}>New Product</button>
         </Link>
       </div>
@@ -113,7 +113,7 @@ const Products: React.FC = () => {
                 {/* Other product details */}
               </div>
               <div className={styles.buttonContainer}>
-                <Link href={`/dashboard/listproducts/edititem?id=${product._id}`}>
+                <Link href={`/dashboard/uploadproducts/edititem?id=${product._id}`}>
                   <button className={styles.editButton}>Edit</button>
                 </Link>
                 <button className={styles.deleteButton} onClick={() => handleDeleteProduct(product._id)}>Delete</button>

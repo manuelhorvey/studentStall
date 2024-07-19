@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import styles from '@/app/ui/dashboard/listproducts/editItem/edititem.module.css';
+import styles from '@/app/ui/dashboard/uploadproducts/editItem/edititem.module.css';
 import {jwtDecode} from 'jwt-decode';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -113,7 +113,7 @@ const EditItem = () => {
       });
 
       setProduct(response.data);
-      router.push('/dashboard/listproducts')
+      router.push('/dashboard/uploadproducts')
     } catch (err) {
       console.error('Error updating product:', err);
     }

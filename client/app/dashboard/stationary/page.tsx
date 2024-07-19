@@ -19,7 +19,7 @@ const Textbooks: React.FC = () => {
   const error = useSelector((state: RootState) => state.products.error);
 
   useEffect(() => {
-    dispatch(fetchProducts('http://localhost:3000/products/category/books'));
+    dispatch(fetchProducts('http://localhost:3000/products/category/stationary'));
   }, [dispatch]);
 
   useEffect(() => {
@@ -39,18 +39,18 @@ const Textbooks: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
-        <h3>Textbooks</h3>
+        <h3>Stationaries</h3>
         <p>
           <i>
-            Browse our collection of textbooks. Find essential resources<br />
+            Browse our collection of Stationaries. Find essential resources<br />
             to support your learning journey and achieve academic success.
           </i>
         </p>
       </div>
 
-      <div className={styles.grid}>
+      <div className={styles.products}>
         {textbooks.map((product) => (
-          <div key={product._id} onClick={() => handleItemClick(product)}>
+          <div key={product._id} className={styles.productItem}  onClick={() => handleItemClick(product)}>
             <CustomsCard
               image={images[product._id] || ''}
               title={product.name}

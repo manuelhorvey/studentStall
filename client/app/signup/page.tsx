@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useState } from 'react';
 import styles from '@/app/ui/signup/signup.module.css';
 import Link from 'next/link';
@@ -9,8 +9,8 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordVisible, setPasswordVisible] = useState(false); // State to manage password visibility
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false); // State to manage confirmPassword visibility
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -23,44 +23,47 @@ const SignUp = () => {
       return;
     }
   
-    // Password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
     if (!passwordRegex.test(password)) {
       setError('Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character');
       return;
     }
-  
-    // Check if password and confirmPassword match
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-/* 
-    // Check if email is a student email (example: ends with .edu)
+
     if (!email.endsWith('.knust.edu.gh')) {
       setError('Please sign up with a valid student email ending in .edu');
       return;
-    } */
+    }
   
     try {
       const response = await axios.post('http://localhost:3000/auth/signup', { name, email, password });
-      console.log(response.data); // Assuming your backend returns a response with a message upon successful signup
+      console.log(response.data);
       
-      // Clear form fields upon successful signup
       setName('');
       setEmail('');
       setPassword('');
       setConfirmPassword('');
 
-      // Show success message and redirect to login page
       alert('An email has been sent to your email address.');
       setTimeout(() => {
-        window.location.href = '/signin'; // Redirect to login page
-      }, 2000); // Redirect after 2 seconds
+        window.location.href = '/signin'; 
+      }, 2000); 
       
-    } catch (err) {
-      console.error('Error signing up:', err);
-      setError('Error signing up. Please try again.'); 
+    } catch (err:any) {
+      if (err.response) {
+        if (err.response.status === 400 && err.response.data.error === "Email already exists. Please use a different email address.") {
+          setError('Email already exists. Please use a different email.');
+        } else if (err.response.status === 400) {
+          setError('Bad request. Please check your input.');
+        } else {
+          setError('Error signing up. Please try again.');
+        }
+      } else {
+        setError('Error signing up. Please try again.');
+      }
     }
   };
   

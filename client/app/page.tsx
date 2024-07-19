@@ -22,7 +22,7 @@ const Home = () => {
             <p>sell Items</p>
           </Link>
         </div>
-      </div>
+      </div> 
       <div className={styles.content}>
         <div className={styles.section}>
           <div className={styles.welcome}>
@@ -145,13 +145,13 @@ const Home = () => {
             <IoLocateOutline className={styles.icon} />
             <div className="text">
               <h3>Our Address</h3>
-              <p>123 Campus Way University City, 12345</p>
+              <p>College of Science, KNUST,MCFM+F94, Kumasi</p>
             </div>
 
             <MdPhone className={styles.icon} />
             <div className="text">
               <h3>Contact Us</h3>
-              <p>+1-800-CAMPUS +1-800-CART</p>
+              <p>+233 2449 00681</p>
             </div>
           </div>
           <footer className={styles.footer}>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 const api = axios.create({
   baseURL: 'http://localhost:3000',
@@ -13,8 +14,6 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-
-
 // Intercept responses to handle token expiration
 api.interceptors.response.use(
   response => response,
@@ -27,11 +26,18 @@ api.interceptors.response.use(
         const response = await axios.post('http://localhost:3000/auth/refresh', { refreshToken });
         const newToken = response.data.token;
         localStorage.setItem('token', newToken);
+        
+        // Update the Authorization header and retry the original request
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return api(originalRequest);
       } catch (refreshError) {
-        // Handle refresh error or redirect to login
         console.error('Error refreshing token:', refreshError);
-        // Redirect to login or handle as needed
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        } else {
+          const router = useRouter();
+          router.push('/login');
+        }
       }
     }
     return Promise.reject(error);

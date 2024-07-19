@@ -18,8 +18,9 @@
   margin-bottom: 30px;
 }
 
+
 .sidebarContainer {
-  flex: 0 0 250px;
+  flex: 0 0 450px;
   padding: 20px;
   overflow-y: auto;
 }
