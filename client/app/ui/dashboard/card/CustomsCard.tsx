@@ -18,6 +18,7 @@ const CustomsCard: React.FC<CustomCardProps> = ({ image, title, price, descripti
           height="150"
           image={image}
           alt={altText}
+          loading="lazy"
         />
         <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
           <Box>

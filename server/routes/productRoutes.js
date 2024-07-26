@@ -60,13 +60,29 @@ router.post('/additem', async (req, res) => {
 
 router.get('/items', async (req, res) => {
   try {
-    const products = await Product.find().populate('category').populate('user').exec();
-    res.status(200).json(products);
+    const { search, page = 1, limit = 6 } = req.query;
+    const query = {};
+
+    if (search) {
+      query.name = { $regex: search, $options: 'i' };
+    }
+
+    const totalItems = await Product.countDocuments(query).exec();
+    const products = await Product.find(query)
+      .populate('category')
+      .populate('user')
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .exec();
+
+    res.status(200).json({ items: products, totalItems });
   } catch (error) {
     console.error('Error fetching products:', error);
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
+
+
 
 //get a single product
 router.get('/:productId', async (req, res) => {
@@ -95,28 +111,39 @@ router.get('/:productId', async (req, res) => {
 // Route to get products by category name
 router.get('/category/:categoryName', async (req, res) => {
   const categoryName = req.params.categoryName;
+  const { search = '', page = 1, limit = 10 } = req.query; 
 
   try {
-    // Find the category by name
     const category = await Category.findOne({ name: categoryName });
 
     if (!category) {
       return res.status(404).json({ message: 'Category not found.' });
     }
 
-    // Use the category's ID to find products
-    const products = await Product.find({ category: category._id }).populate('category').exec();
+    const query = { category: category._id };
 
-    if (!products || products.length === 0) {
-      return res.status(404).json({ message: 'No products found for this category.' });
+    if (search) {
+      query.name = { $regex: search, $options: 'i' };
     }
 
-    res.status(200).json(products);
+    const totalItems = await Product.countDocuments(query);
+
+    // Find products with pagination
+    const products = await Product.find(query)
+      .populate('category')
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .exec();
+
+    res.status(200).json({ items: products, totalItems });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+
 
 
 module.exports = router;

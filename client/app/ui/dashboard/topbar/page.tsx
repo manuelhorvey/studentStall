@@ -27,10 +27,10 @@ const TopBar = () => {
       >
         <Sidebar />
       </Drawer>
-      <div className={`${styles.searchContainer} ${styles.topbarSearch}`}>
+      {/* <div className={`${styles.searchContainer} ${styles.topbarSearch}`}>
         <MdSearch />
         <input type='text' className={styles.searchInput} placeholder='Search for something...' />
-      </div>
+      </div> */}
       <div className={styles.buttons}>
         
         <Link href={"/dashboard/inbox"}>
