@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import Image from 'next/image';
 import {jwtDecode} from 'jwt-decode';
-import styles from '@/app/ui/dashboard/productid/productdetail.module.css';
+import styles from './productdetail.module.css';
 import StartChatButton from '@/app/ui/startChart/startChatButton';
 
 interface Product {

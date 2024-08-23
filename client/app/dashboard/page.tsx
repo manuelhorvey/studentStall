@@ -9,6 +9,7 @@ import { Product } from '../slice/types';
 import { AppDispatch, RootState } from '../store/store';
 import Pagination from '../ui/dashboard/pagination/pagination';
 import { useRouter, useSearchParams } from 'next/navigation';
+import debounce from 'lodash.debounce'; 
 
 const Discover: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,10 +18,10 @@ const Discover: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.items);
   const totalItems = useSelector((state: RootState) => state.products.totalItems);
   const images = useSelector((state: RootState) => state.images.items);
-  const [searchQuery, setSearchQuery] = useState('');
-  const itemsPerPage = 6; 
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
 
   const page = parseInt(searchParams.get('page') || '1');
+  const itemsPerPage = 6; 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,10 +41,10 @@ const Discover: React.FC = () => {
     router.push(`/dashboard/productdetails/product?productid=${product._id}`);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     router.replace(`/dashboard?search=${e.target.value}&page=1`);
-  };
+  }, 500); // 500ms debounce
 
   const truncateDescription = (description: string, maxLength: number) => {
     if (description.split(' ').length > maxLength) {
@@ -65,13 +66,13 @@ const Discover: React.FC = () => {
         <input 
           type="text" 
           placeholder="Search products..." 
-          value={searchQuery} 
+          defaultValue={searchQuery} 
           onChange={handleSearchChange} 
           className={styles.searchBar} 
         />
       </div>
       <div className={styles.products}>
-        {products.map((product) => (
+        {products.length > 0 ? products.map((product) => (
           <div key={product._id} className={styles.productItem} onClick={() => handleCardClick(product)}>
             <CustomsCard
               image={images[product._id] || ''}
@@ -81,7 +82,7 @@ const Discover: React.FC = () => {
               description={truncateDescription(product.description, 20)}
             />
           </div>
-        ))}
+        )) : <p>No products found</p>}
       </div>
       <Pagination count={totalItems} />
     </div>

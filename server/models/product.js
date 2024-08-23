@@ -13,6 +13,11 @@ const productSchema = new mongoose.Schema({
 // Unique index on product name and category
 productSchema.index({ name: 1, category: 1 }, { unique: true });
 
+// Additional indexes for performance
+productSchema.index({ category: 1 });
+productSchema.index({ price: 1 });
+productSchema.index({ user: 1 });
+
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
 
 module.exports = Product;

@@ -1,7 +1,8 @@
-'use client'
+'use client';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import io from 'socket.io-client';
 import styles from '@/app/ui/dashboard/inbox/inbox.module.css';
 
@@ -14,39 +15,56 @@ interface Message {
   updatedAt: string;
 }
 
+interface DecodedToken {
+  userId: string;
+}
+
 const ConversationPage: React.FC = () => {
   const searchParams = useSearchParams();
-  const userId = searchParams.get('userid');
   const conversationId = searchParams.get('conversationid');
-
+  const [userId, setUserId] = useState<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<string>('');
   const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    const newSocket = io('http://localhost:8901');
-
-    newSocket.on('connect', () => {
-      console.log('Connected to WebSocket server');
-      if (userId) {
-        newSocket.emit('addUser', userId);
+    const token = localStorage.getItem('token');
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(token);
+        setUserId(decodedToken.userId);
+        console.log('Decoded token:', decodedToken);
+      } catch (error) {
+        console.error('Error decoding token:', error);
       }
-    });
+    } else {
+      console.log('No token found in localStorage.');
+    }
+  }, []);
 
-    newSocket.on('getMessage', (message: Message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    newSocket.on('disconnect', () => {
-      console.log('Disconnected from WebSocket server');
-    });
-
-    setSocket(newSocket);
-
-    return () => {
-      newSocket.disconnect();
-    };
+  useEffect(() => {
+    if (userId && !socket) {
+      const newSocket = io('http://localhost:8901');
+  
+      newSocket.on('connect', () => {
+        console.log('Connected to WebSocket server');
+        newSocket.emit('addUser', userId);
+      });
+  
+      newSocket.on('getMessage', (message) => {
+        console.log('Message received:', message);
+        setMessages((prevMessages) => [...prevMessages, message]);
+      });
+  
+      setSocket(newSocket);
+  
+      return () => {
+        newSocket.disconnect();
+        console.log('Disconnected from WebSocket server');
+      };
+    }
   }, [userId]);
+  
 
   useEffect(() => {
     if (userId && conversationId) {
@@ -69,15 +87,21 @@ const ConversationPage: React.FC = () => {
     if (!newMessage.trim()) return;
 
     try {
-      const response = await axios.post('http://localhost:3000/messages', {
+      await axios.post('http://localhost:3000/messages', {
         conversationId,
         sender: userId,
         text: newMessage,
       });
 
+      console.log('Sending message via socket:', {
+        senderId: userId,
+        receiverId: conversationId,
+        text: newMessage,
+      });
+
       socket?.emit('sendMessage', {
         senderId: userId,
-        receiverId: conversationId, // Assuming conversationId can be used to identify the receiver
+        receiverId: conversationId,
         text: newMessage,
       });
 

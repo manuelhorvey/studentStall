@@ -1,19 +1,20 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const ConversationSchema = new mongoose.Schema(
   {
     members: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming "User" is the model name
+      ref: 'User',
     }],
     messages: [{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Message",
+      ref: 'Message',
     }],
   },
   { timestamps: true }
 );
 
-const Conversation = mongoose.model("Conversation", ConversationSchema);
+// Check if the model already exists, otherwise define it
+const Conversation = mongoose.models.Conversation || mongoose.model('Conversation', ConversationSchema);
 
 module.exports = Conversation;

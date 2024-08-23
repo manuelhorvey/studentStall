@@ -13,18 +13,26 @@ const initialState: ImagesState = {
   error: null,
 };
 
-export const fetchImages = createAsyncThunk<{ [key: string]: string }, string[]>('images/fetchImages', async (productIds) => {
-  const fetchedImages: { [key: string]: string } = {};
-  await Promise.all(
-    productIds.map(async (id) => {
-      const response = await axios.get(`http://localhost:3000/images/${id}`);
-      if (response.data.length > 0) {
-        fetchedImages[id] = response.data[0].url;
-      }
-    })
-  );
-  return fetchedImages;
-});
+export const fetchImages = createAsyncThunk<{ [key: string]: string }, string[]>(
+  'images/fetchImages',
+  async (productIds) => {
+    const fetchedImages: { [key: string]: string } = {};
+    await Promise.all(
+      productIds.map(async (id) => {
+        try {
+          const response = await axios.get<{ url: string }[]>(`http://localhost:3000/images/${id}`);
+          if (response.data.length > 0) {
+            fetchedImages[id] = response.data[0].url;
+          }
+        } catch (error) {
+          console.error(`Failed to fetch image for product ID ${id}:`, error);
+          // Handle error as needed, e.g., continue without setting the image
+        }
+      })
+    );
+    return fetchedImages;
+  }
+);
 
 const imagesSlice = createSlice({
   name: 'images',
@@ -37,7 +45,7 @@ const imagesSlice = createSlice({
       })
       .addCase(fetchImages.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.items = action.payload;
+        state.items = { ...state.items, ...action.payload };
       })
       .addCase(fetchImages.rejected, (state, action) => {
         state.status = 'failed';

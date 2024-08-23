@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all conversations with member names
+// Get all conversations for a specific user with member names
 router.get("/:userId", async (req, res) => {
   try {
     const userId = req.params.userId; // Get userId from the URL parameter
@@ -37,9 +37,6 @@ router.get("/:userId", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
-module.exports = router;
-
 
 // Update Conversation
 router.put("/:conversationId", async (req, res) => {
@@ -60,7 +57,7 @@ router.put("/:conversationId", async (req, res) => {
 });
 
 // Delete Conversation
-router.delete("/conversations/:conversationId", async (req, res) => {
+router.delete("/:conversationId", async (req, res) => {
   try {
     const deletedConversation = await Conversation.findByIdAndDelete(req.params.conversationId);
     if (!deletedConversation) {

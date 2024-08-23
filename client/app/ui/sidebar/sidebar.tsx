@@ -55,6 +55,13 @@ const Sidebar: React.FC = () => {
       });
   }, [dispatch, router]);
 
+  const confirmAndSignOut = () => {
+    const confirmed = window.confirm('Are you sure you want to log out?');
+    if (confirmed) {
+      signOut();
+    }
+  };
+
   const signOut = async () => {
     try {
       await axiosInstance.post('/auth/signout');
@@ -91,7 +98,7 @@ const Sidebar: React.FC = () => {
           </li>
         ))}
       </ul>
-      <button className={styles.logout} onClick={signOut}>
+      <button className={styles.logout} onClick={confirmAndSignOut}>
         <MdLogout />
         Logout
       </button>

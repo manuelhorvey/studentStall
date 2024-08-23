@@ -66,8 +66,11 @@ const Products: React.FC = () => {
     }
     return text;
   };
-  
+
   const handleDeleteProduct = async (productId: string) => {
+    const confirmed = window.confirm('Are you sure you want to delete this product?');
+    if (!confirmed) return;
+
     try {
       const token = localStorage.getItem('token');
       if (!token) {

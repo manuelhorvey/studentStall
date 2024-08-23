@@ -15,19 +15,19 @@ router.post('/additem', async (req, res) => {
   try {
     const { name, description, price, category: categoryName, negotiable, user: userId, images } = req.body;
 
-    // Ensure that the category exists
+    // Ensure category exists
     const category = await Category.findOne({ name: categoryName }).session(session);
     if (!category) {
       return res.status(400).json({ message: 'Invalid category' });
     }
 
-    // Ensure that the user exists
+    // Ensure user exists
     const user = await User.findById(userId).session(session);
     if (!user) {
       return res.status(400).json({ message: 'Invalid user' });
     }
 
-    // Create the product
+    // Create product
     const product = new Product({
       name,
       description,
@@ -38,14 +38,13 @@ router.post('/additem', async (req, res) => {
     });
     await product.save({ session });
 
-    // Create associated images
+    // Create images
     const imageDocs = images.map(imageUrl => ({
       url: imageUrl,
       product: product._id,
     }));
     const createdImages = await Image.insertMany(imageDocs, { session });
 
-    // Commit transaction
     await session.commitTransaction();
     session.endSession();
 
@@ -58,6 +57,7 @@ router.post('/additem', async (req, res) => {
 });
 
 
+// Get products with optional search and pagination
 router.get('/items', async (req, res) => {
   try {
     const { search, page = 1, limit = 6 } = req.query;
@@ -83,19 +83,16 @@ router.get('/items', async (req, res) => {
 });
 
 
-
-//get a single product
+// Get a single product
 router.get('/:productId', async (req, res) => {
   const { productId } = req.params;
 
   try {
-    // Find the product by its ID and populate the category and user fields
     const product = await Product.findById(productId)
       .populate('category')
-      .populate('user', 'name') // Populate user field with 'name' only
+      .populate('user', 'name')
       .exec();
 
-    // If product is found, return it
     if (product) {
       res.status(200).json(product);
     } else {
@@ -108,10 +105,11 @@ router.get('/:productId', async (req, res) => {
 });
 
 
-// Route to get products by category name
+
+// Get products by category name
 router.get('/category/:categoryName', async (req, res) => {
   const categoryName = req.params.categoryName;
-  const { search = '', page = 1, limit = 10 } = req.query; 
+  const { search = '', page = 1, limit = 6 } = req.query;
 
   try {
     const category = await Category.findOne({ name: categoryName });
@@ -126,9 +124,8 @@ router.get('/category/:categoryName', async (req, res) => {
       query.name = { $regex: search, $options: 'i' };
     }
 
-    const totalItems = await Product.countDocuments(query);
+    const totalItems = await Product.countDocuments(query).exec();
 
-    // Find products with pagination
     const products = await Product.find(query)
       .populate('category')
       .skip((page - 1) * limit)
@@ -137,11 +134,10 @@ router.get('/category/:categoryName', async (req, res) => {
 
     res.status(200).json({ items: products, totalItems });
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching products by category:', err);
     res.status(500).json({ message: 'Server Error' });
   }
 });
-
 
 
 

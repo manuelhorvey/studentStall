@@ -9,14 +9,12 @@ interface ProductsState {
   error: string | null;
 }
 
-
 const initialState: ProductsState = {
   items: [],
   totalItems: 0,
   status: 'idle',
   error: null,
 };
-
 
 export const fetchProducts = createAsyncThunk<{
   items: Product[];
@@ -32,8 +30,7 @@ export const fetchProducts = createAsyncThunk<{
   }
 );
 
-
-export const deleteProduct = createAsyncThunk<string, { baseUrl: string, productId: string }>(
+export const deleteProduct = createAsyncThunk<string, { baseUrl: string; productId: string }>(
   'products/deleteProduct',
   async ({ baseUrl, productId }) => {
     await axios.delete(`${baseUrl}/${productId}`);
@@ -59,11 +56,18 @@ const productsSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message || null;
       })
+      .addCase(deleteProduct.pending, (state) => {
+        state.status = 'loading'; 
+      })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.items = state.items.filter((product) => product._id !== action.payload);
+        state.status = 'succeeded';
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || null;
       });
   },
 });
-
 
 export default productsSlice.reducer;

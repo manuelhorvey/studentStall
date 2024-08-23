@@ -1,21 +1,22 @@
 .container {
-  
-  margin: 0 auto;
+  margin-top: 20px;
 }
 
 .image {
   width: 100%; 
   max-height: 200px; 
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px; 
 }
 
 .textContainer {
   margin-top: 10px;
+  object-fit: contain;
 }
 
 .textContainer {
   margin-top: 20px;
+  
 }
 
 .textContainer h3 {
@@ -40,15 +41,20 @@
 
 .products {
   display: flex;
-  flex-wrap: wrap;
   gap: 16px;
   margin-top: 30px;
+  flex-wrap: wrap; 
 }
 
 .productItem {
   top: 20px;
-  flex: 1 1 25%; 
-  box-sizing: border-box; 
+  flex: 1 1 calc(25% - 16px); 
+  box-sizing: border-box;
+  min-width: 200px; 
+}
+
+.searchBar{
+  padding: 10px;
 }
 
 .cardLink {

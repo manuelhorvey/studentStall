@@ -46,7 +46,6 @@ const Messenger: React.FC = () => {
     if (token) {
       const decodedToken = jwtDecode<DecodedToken>(token);
       setUserId(decodedToken.userId);
-
       // Initialize Socket.IO connection
       const newSocket = io("ws://localhost:8901");
       setSocket(newSocket);
@@ -65,6 +64,10 @@ const Messenger: React.FC = () => {
       };
 
       fetchConversations();
+
+      return () => {
+        newSocket.disconnect();
+      };
     }
   }, []);
 
@@ -80,9 +83,10 @@ const Messenger: React.FC = () => {
       setMessages(prevMessages => [...prevMessages, message]);
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    socket.on('disconnect', () => {
+      console.log('Disconnected from socket server');
+    });
+
   }, [socket]);
 
   // Function to send a message via socket
@@ -130,7 +134,7 @@ const Messenger: React.FC = () => {
       });
 
       // Add the sent message to state
-      setMessages([...messages, response.data]);
+      setMessages(prevMessages => [...prevMessages, response.data]);
       setNewMessage('');
       
       // Send the message through socket as well
